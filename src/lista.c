@@ -188,7 +188,7 @@ int busca_por_nome(Lista* li, char *nome, struct produto *p) {
 int insere_lista_decrescente(Lista* li, struct produto p) {
     if (li == NULL) return 0;
     if (li->qtd == MAX) return 0;
-    int i, k;
+    int i = 0, k;
     while (i < li->qtd && li->dados[i].preco > p.preco) {
         i++;
     }
@@ -211,6 +211,7 @@ int remove_mais_caro(Lista* li, struct produto *removido) {
             maior = li->dados[i].preco;
             j = i;
         }
+        i++;
     }
     li->qtd--;
     *removido = li->dados[j];
@@ -232,17 +233,15 @@ int conta_faixa_preco(Lista* li, float min, float max) {
 
 int remove_abaixo_de(Lista* li, float precoMinimo) {
     if (li == NULL) return 0;
-    int i = 0, count = 0;
-    while (i != li->qtd-1) {
+    int count = 0;
+    for (int i = 0; i < li->qtd; i++) {
         if (li->dados[i].preco < precoMinimo) {
             li->qtd--;
             li->dados[i] = li->dados[li->qtd];
             count++;
-        } else {
-            i++;
+            i--;
         }
     }
-
     return count;
 }
 
@@ -275,17 +274,28 @@ int mescla_listas(Lista* destino, Lista* origem) {
 
 void printar_lista(Lista *li) {
     printf("\033[2J\033[H");
+    printf("\n================================\n");
     for (int i = 0; i < li->qtd; i++) {
         printf("Nome do %d produto: %s\n", i+1, li->dados[i].nome);
         printf("Codigo do %d produto: %d\n", i+1, li->dados[i].codigo);
         printf("Preco do %d produto: %.2f\n", i+1, li->dados[i].preco);
         printf("\n");
     }
+    printf("\n================================\n");
+    printf("Pressione Qualquer tecla para continuar: ");
+    getchar();
+    getchar();
 }
 
 void printar_produto(struct produto *p) {
+    printf("\033[2J\033[H");
+    printf("\n================================\n");
     printf("Nome do produto removido: %s\n", p->nome);
     printf("Codigo do produto removido: %d\n", p->codigo);
     printf("Preco do produto removido: %.2f\n", p->preco);
     printf("\n");
+    printf("\n================================\n");
+    printf("Pressione Qualquer tecla para continuar: ");
+    getchar();
+    getchar();
 }

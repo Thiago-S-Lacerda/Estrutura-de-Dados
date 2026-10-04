@@ -17,14 +17,14 @@ void menu() {
     printf("\033[2J\033[H");
 
     while (sistema) {
-        printf("\n================\n");
-        printf("\tMENU\n");
+        printf("\n================================\n");
+        printf("\t      MENU\n");
         printf("<1> : Adicionar produto na lista\n");
         printf("<2> : Remover produto na lista\n");
         printf("<3> : Buscar item na lista\n");
         printf("<4> : Funcoes Gerais\n");
         printf("<5> : Encerrar Programa\n");
-        printf("\n================\n");
+        printf("\n================================\n");
         printf("Digite o que voce quer fazer: ");
         scanf("%d", &resp);
         switch (resp) {
@@ -59,14 +59,14 @@ void caso1(Lista *li, struct produto p) {
     float preco = 0;
     char nome[30];
     printf("\033[2J\033[H");
-    printf("\n================\n");
-    printf("\tMENU\n");
+    printf("\n================================\n");
+    printf("\t      MENU\n");
     printf("<1> : Inserir no final\n");
     printf("<2> : Inserir no inicio\n");
     printf("<3> : Inserir ordenado\n");
     printf("<4> : Inserir ordenado decrescente\n");
     printf("<5> : Voltar\n");
-    printf("\n================\n");
+    printf("\n================================\n");
     printf("Digite o que voce quer fazer: ");
     scanf("%d", &resp);
     printf("\033[2J\033[H");
@@ -81,7 +81,9 @@ void caso1(Lista *li, struct produto p) {
             p.codigo = codigo;
             p.preco = preco;
             strcpy(p.nome, nome);
-            insere_lista_final(li, p);
+            if (!insere_lista_final(li, p)) {
+                printf("Nao foi possivel inserir na lista\n");
+            }
             break;
         case 2:
             printf("Digite o nome do produto: ");
@@ -93,7 +95,9 @@ void caso1(Lista *li, struct produto p) {
             p.codigo = codigo;
             p.preco = preco;
             strcpy(p.nome, nome);
-            insere_lista_inicio(li, p);
+            if (!insere_lista_inicio(li, p)) {
+                printf("Nao foi possivel inserir na lista\n");
+            }
             break;
         case 3:
             printf("Digite o nome do produto: ");
@@ -105,7 +109,9 @@ void caso1(Lista *li, struct produto p) {
             p.codigo = codigo;
             p.preco = preco;
             strcpy(p.nome, nome);
-            insere_lista_ordenada(li, p);
+            if (!insere_lista_ordenada(li, p)) {
+                printf("Nao foi possivel inserir na lista\n");
+            }
             break;
         case 4:
             printf("Digite o nome do produto: ");
@@ -117,7 +123,9 @@ void caso1(Lista *li, struct produto p) {
             p.codigo = codigo;
             p.preco = preco;
             strcpy(p.nome, nome);
-            insere_lista_decrescente(li, p);
+            if (!insere_lista_decrescente(li, p)) {
+                printf("Nao foi possivel inserir na lista\n");
+            }
             break;
         default:
             if (resp != 5) {
@@ -131,42 +139,55 @@ void caso1(Lista *li, struct produto p) {
 void caso2(Lista *li) {
     int resp;
     printf("\033[2J\033[H");
-    printf("\n================\n");
-    printf("\tMENU\n");
+    printf("\n================================\n");
+    printf("\t      MENU\n");
     printf("<1> : Remover no final\n");
     printf("<2> : Remover no inicio\n");
     printf("<3> : Remover por codigo especifico\n");
     printf("<4> : Remover mais caro\n");
     printf("<5> : Remover abaixo de certo preco\n");
     printf("<6> : Voltar\n");
-    printf("\n================\n");
+    printf("\n================================\n");
     printf("Digite o que voce quer fazer: ");
     scanf("%d", &resp);
     printf("\033[2J\033[H");
     switch (resp) {
         case 1:
-            remove_lista_final(li);
+            if (!remove_lista_final(li)) {
+                printf("Nao foi possivel remover da lista\n");
+            }   
             break;
         case 2:
-            remove_lista_inicio(li);
+            if (!remove_lista_inicio(li)) {
+                printf("Nao foi possivel remover da lista\n");
+            }
             break;
         case 3:
             int cod;
             printf("Digite o codigo do produto a ser removido: ");
             scanf("%d", &cod);
-            remove_lista_otimizado(li, cod);
+            if (!remove_lista_otimizado(li, cod)) {
+                printf("Nao foi possivel remover da lista\n");
+            }
             break;
         case 4:
             struct produto *p2 = malloc(sizeof(struct produto));
-            remove_mais_caro(li, p2);
-            printar_produto(p2);
+            if (remove_mais_caro(li, p2)) {
+                printf("Produto removido:\n\n");
+                printar_produto(p2);
+            } else {
+                printf("Nao foi possivel remover da lista\n");
+            }
             free(p2);
             p2 = NULL;
+            break;
         case 5:
             float preco;
-            printf("Digite o preco do produto a ser removido: ");
+            printf("Digite o preco minimo: ");
             scanf("%f", &preco);
-            remove_abaixo_de(li, preco);
+            int count = remove_abaixo_de(li, preco);
+            printf("A quantidade de produtos removido foi de: %d\n", count);
+            break;
         default:
             if (resp != 6) {
                 printf("\033[2J\033[H");
@@ -179,13 +200,13 @@ void caso2(Lista *li) {
 void caso3(Lista *li, struct produto *p) {
     int resp;
     printf("\033[2J\033[H");
-    printf("\n================\n");
-    printf("\tMENU\n");
+    printf("\n================================\n");
+    printf("\t      MENU\n");
     printf("<1> : Buscar por posicao\n");
     printf("<2> : Buscar por codigo\n");
     printf("<3> : Buscar por nome\n");
     printf("<4> : Voltar\n");
-    printf("\n================\n");
+    printf("\n================================\n");
     printf("Digite o que voce quer fazer: ");
     scanf("%d", &resp);
     printf("\033[2J\033[H");
@@ -194,28 +215,37 @@ void caso3(Lista *li, struct produto *p) {
             int pos;
             printf("Digite a posicao a ser buscada: ");
             scanf("%d", &pos);
-            busca_lista_pos(li, pos, p);
-            printf("Nome do produto buscado: %s\n", p->nome);
-            printf("Codigo do produto buscado: %d\n", p->codigo);
-            printf("Preco do produto buscado: %.2f", p->preco);
+            if (busca_lista_pos(li, pos, p)) {
+                printf("Nome do produto buscado: %s\n", p->nome);
+                printf("Codigo do produto buscado: %d\n", p->codigo);
+                printf("Preco do produto buscado: %.2f", p->preco);
+            } else {
+                printf("Posicao invalida");
+            }
             break;
         case 2:
             int cod;
             printf("Digite o codigo a ser buscado: ");
             scanf("%d", &cod);
-            busca_lista_cod(li, cod, p);
-            printf("Nome do produto buscado: %s\n", p->nome);
-            printf("Codigo do produto buscado: %d\n", p->codigo);
-            printf("Preco do produto buscado: %.2f", p->preco);
+            if (busca_lista_cod(li, cod, p)) {
+                printf("Nome do produto buscado: %s\n", p->nome);
+                printf("Codigo do produto buscado: %d\n", p->codigo);
+                printf("Preco do produto buscado: %.2f", p->preco);
+            } else {
+                printf("Produto nao encontrado");
+            }
             break;
         case 3:
             char nome[30];
             printf("Digite o nome do produto a ser buscado: ");
             scanf("%s", nome);
-            busca_por_nome(li, nome, p);
-            printf("Nome do produto buscado: %s\n", p->nome);
-            printf("Codigo do produto buscado: %d\n", p->codigo);
-            printf("Preco do produto buscado: %.2f", p->preco);
+            if (busca_por_nome(li, nome, p)) {
+                printf("Nome do produto buscado: %s\n", p->nome);
+                printf("Codigo do produto buscado: %d\n", p->codigo);
+                printf("Preco do produto buscado: %.2f", p->preco);
+            } else {
+                printf("Produto nao encontrado");
+            }
             break;
         default:
             if (resp != 4) {
@@ -229,8 +259,8 @@ void caso3(Lista *li, struct produto *p) {
 void caso4(Lista *li, struct produto *p) {
     int resp;
     printf("\033[2J\033[H");
-    printf("\n================\n");
-    printf("\tMENU\n");
+    printf("\n================================\n");
+    printf("\t      MENU\n");
     printf("<1> : Tamanho da lista\n");
     printf("<2> : Verificar se tem espaco na lista\n");
     printf("<3> : Soma dos precos de todos os produtos da lista\n");
@@ -239,7 +269,7 @@ void caso4(Lista *li, struct produto *p) {
     printf("<6> : Mesclar duas listas\n");
     printf("<7> : Printar toda a lista\n");
     printf("<8> : Voltar");
-    printf("\n================\n");
+    printf("\n================================\n");
     printf("Digite o que voce quer fazer: ");
     scanf("%d", &resp);
     printf("\033[2J\033[H");
@@ -271,7 +301,12 @@ void caso4(Lista *li, struct produto *p) {
             scanf("%f", &min);
             printf("Digite o preco maximo: ");
             scanf("%f", &max);
-            printf("A quantidade de produtos nessa faixa de preco e: %d", conta_faixa_preco(li, min, max));
+            int num = conta_faixa_preco(li, min, max);
+            if (num != -1) {
+                printf("A quantidade de produtos nessa faixa de preco e: %d", conta_faixa_preco(li, min, max));
+            } else {
+                printf("Nao foi possivel verificar\n");
+            }
             break;
         case 5:
             if (lista_vazia(li)) {
@@ -285,17 +320,32 @@ void caso4(Lista *li, struct produto *p) {
             strcpy(p->nome, "Arroz");
             p->preco = 7.9f;
             Lista *li2 = cria_lista();
-            insere_lista_final(li2, *p);
+            if (li2 == NULL) {
+                printf("Nao foi possivel efetuar essa operacao\n");
+                break;
+            }
+            if (!insere_lista_final(li2, *p)) {
+                printf("Nao foi possivel efetuar essa operacao\n");
+                break;
+            }
             p->codigo = 1011;
             strcpy(p->nome, "Feijao");
             p->preco = 9.99f;
-            insere_lista_final(li2, *p);
-            mescla_listas(li, li2);
+            if (!insere_lista_final(li2, *p)) {
+                printf("Nao foi possivel efetuar essa operacao\n");
+                break;
+            }
+            if (!mescla_listas(li, li2)) {
+                printf("Nao foi possivel efetuar essa operacao\n");
+                break;
+            }
             libera_lista(li2);
             li2 = NULL;
+            printf("Lista depois da mesclagem:\n\n");
             printar_lista(li);
             break;
         case 7:
+            printf("Lista:\n\n");
             printar_lista(li);
             break;
         default:

@@ -1,14 +1,17 @@
 CC     = gcc
-CFLAGS = -Wall -Wextra -std=c11 -g
+CFLAGS = -Wall -Wextra -std=c11 -g -Iinclude
 
-programa: main.o lista.o
-	$(CC) $(CFLAGS) -o programa main.o lista.o -lm
+programa: build/main.o build/lista.o build/menu.o
+	$(CC) $(CFLAGS) -o build/programa build/main.o build/lista.o build/menu.o -lm
 
-main.o: main.c lista.h
-	$(CC) $(CFLAGS) -c main.c
+build/main.o: src/main.c include/lista.h include/menu.h
+	$(CC) $(CFLAGS) -c src/main.c -o build/main.o
 
-lista.o: lista.c lista.h
-	$(CC) $(CFLAGS) -c lista.c
+build/lista.o: src/lista.c include/lista.h
+	$(CC) $(CFLAGS) -c src/lista.c -o build/lista.o
+
+build/menu.o: src/menu.c include/menu.h
+	$(CC) $(CFLAGS) -c src/menu.c -o build/menu.o
 
 clean:
-	rm -f *.o programa
+	rm -f build/*.o build/programa
