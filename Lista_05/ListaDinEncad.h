@@ -90,4 +90,10 @@ int remove_tarefa_pos(ListaTarefas* li, int pos);
 
 int mescla_tarefas(ListaTarefas* dst, ListaTarefas* src);
 
+// FUNÇÕES IMPLEMENTADAS A PARTE
+
+void printar_tarefa(struct tarefa *t);
+
+void printar_lista(ListaTarefas *li);
+
 #endif /* LISTA_DIN_ENCAD_H */

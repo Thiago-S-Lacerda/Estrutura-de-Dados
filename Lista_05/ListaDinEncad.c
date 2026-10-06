@@ -235,7 +235,7 @@ int tarefa_mais_urgente(ListaTarefas* li, struct tarefa *t) {
         }
         no = no->prox;
     }
-
+    
     *t = aux->dados;
     return 1;
 }
@@ -374,4 +374,38 @@ int mescla_tarefas(ListaTarefas* dst, ListaTarefas* src) {
     }
     *src = NULL;
     return count;
+}
+
+// FUNÇÕES IMPLEMENTADAS A PARTE:
+
+void printar_tarefa(struct tarefa *t) {
+    printf("\033[2J\033[H");
+    printf("\n================================\n");
+    printf("Codigo da tarefa buscada: %d\n", t->codigo);
+    printf("Descricao da tarefa buscada: %s\n", t->descricao);
+    printf("Prioridade da tarefa buscada: %d\n", t->prioridade);
+    printf("\n================================\n");
+    printf("Pressione Qualquer tecla para continuar: ");
+    getchar();
+    getchar();
+}
+
+void printar_lista(ListaTarefas *li) {
+    if (li == NULL) return;
+    printf("\033[2J\033[H");
+    printf("\n================================\n");
+    Elem *no = (*li);
+    int i = 1;
+    while (no != NULL) {
+        printf("Codigo da %d tarefa: %d\n", i, no->dados.codigo);
+        printf("Descricao da %d tarefa: %s\n", i, no->dados.descricao);
+        printf("Prioridade da %d tarefa: %d\n", i, no->dados.prioridade);
+        no = no->prox;
+        i++;
+        printf("\n");
+    }
+    printf("\n================================\n");
+    printf("Pressione Qualquer tecla para continuar: ");
+    getchar();
+    getchar();
 }
