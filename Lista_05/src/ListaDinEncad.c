@@ -257,7 +257,7 @@ int busca_tarefa_desc(ListaTarefas* li, char *texto, struct tarefa *t) {
 
 int insere_tarefa_final_prioridade(ListaTarefas* li, struct tarefa t) {
     if (li == NULL) return 0;
-    Elem* no = *li, *aux = NULL, *ant = NULL;
+    Elem* no = *li, *ant = NULL;
     Elem* no_inserir = (Elem*)malloc(sizeof(Elem));
     if (no_inserir == NULL) return 0;
     no_inserir->dados = t;
@@ -274,7 +274,6 @@ int insere_tarefa_final_prioridade(ListaTarefas* li, struct tarefa t) {
             }
         }
         if (no->dados.prioridade == prd) {
-            aux = no;
             flag = 1;
         }
         ant = no;
@@ -283,6 +282,7 @@ int insere_tarefa_final_prioridade(ListaTarefas* li, struct tarefa t) {
     if (no == NULL) {
         ant->prox = no_inserir;
         no_inserir->prox = NULL;
+        return 1;
     }
     no_inserir->prox = no;
     ant->prox = no_inserir;

@@ -19,11 +19,19 @@ void menu() {
     t2.codigo = 10;
     strcpy(t2.descricao, "Fazer a atividade da CortechX");
     t2.prioridade = 2;
-    if (!insere_tarefa_ordenada(li2, t2)) return;
+    if (!insere_tarefa_ordenada(li2, t2)) {
+        libera_lista(li);
+        libera_lista(li2);
+        return;
+    }
     t2.codigo = 11;
     strcpy(t2.descricao, "Estudar para Estrutura de Dados");
     t2.prioridade = 1;
-    if (!insere_tarefa_ordenada(li2, t2)) return;
+    if (!insere_tarefa_ordenada(li2, t2)) {
+        libera_lista(li);
+        libera_lista(li2);
+        return;
+    }
     
     printf("\033[2J\033[H");
 

@@ -74,26 +74,38 @@ int busca_tarefa_cod(ListaTarefas* li, int codigo, struct tarefa *t);
 
 // FUNÇÕES NOVAS IMPLEMENTADAS, REQUERIDAS PELA ATIVIDADE
 
+/* Conta quantas tarefas possuem a mesma prioridade da passada. Custo O(n)*/
 int conta_tarefas_prioridade(ListaTarefas* li, int prioridade);
 
+/* Verifica qual é a tarefa que possue o menor valor no campo prioridade. Custo O(n)*/
 int tarefa_mais_urgente(ListaTarefas* li, struct tarefa *t);
 
+/* Acha a primeira tarefa que possua uma substring no campo descricao que seja igual ao texto. Custo O(n)*/
 int busca_tarefa_desc(ListaTarefas* li, char *texto, struct tarefa *t);
 
+/* Insere a tarefa ao final de todas as outras tarefas com a mesma prioridade que a passada.
+   Se não houver na lista uma tarefa com a mesma prioridade, a tarefa é adicionada ao final da lista. Custo O(n)*/
 int insere_tarefa_final_prioridade(ListaTarefas* li, struct tarefa t);
 
+/* Remove todas as tarefas que possuam a mesma prioridade passada. Custo O(n)*/
 int remove_tarefas_prioridade(ListaTarefas* li, int prioridade);
 
+/* Inverte a lista inteira apenas manipulando os ponteiros. Custo O(n)*/
 int inverte_lista(ListaTarefas* li);
 
+/* Remove uma tarefa da lista de acordo com a posição passada. Custo O(n)*/
 int remove_tarefa_pos(ListaTarefas* li, int pos);
 
+/* Junta as duas listas (Conectando o final de dst com o começo de src) e deixa vazia a lista src.
+   Como só precisa chegar ao final de dst para mesclar, então o custo é O(n)*/
 int mescla_tarefas(ListaTarefas* dst, ListaTarefas* src);
 
 // FUNÇÕES IMPLEMENTADAS A PARTE
 
+/* Imprime no terminal os campos de tarefa que foi passada. Custo O(1)*/
 void printar_tarefa(struct tarefa *t);
 
+/* Imprime os campos de cada tarefa presente na lista. Custo O(n)*/
 void printar_lista(ListaTarefas *li);
 
 #endif /* LISTA_DIN_ENCAD_H */
