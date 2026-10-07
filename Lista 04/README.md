@@ -24,7 +24,7 @@ O projeto está organizado nos seguintes diretórios e arquivos:
 
 
 * **`Makefile`**: Automação para compilação do projeto.
-* **`Sobre_a_atividade.md`**: Explicação detalhada da proposta da atividade.
+* **`README.md`**: Explicação detalhada da proposta da atividade.
 * **`Documentacao_atividade`**: Documento oficial com os requisitos pedidos pelo professor.
 
 ---
