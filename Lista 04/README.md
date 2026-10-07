@@ -52,5 +52,3 @@ make programa
 * **Função de Mesclagem (`mescla_listas`)**: Junta duas listas em uma nova estrutura (atualmente testada com uma lista padrão gerada diretamente no código).
 
 ---
-
-*Desenvolvido como parte dos estudos de Estruturas de Dados.*
