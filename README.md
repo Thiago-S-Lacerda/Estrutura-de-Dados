@@ -1,4 +1,4 @@
-# Estruturas de Dados - UFTB
+# Estruturas de Dados - UFPB
 
 Repositório centralizado dedicado ao armazenamento e à documentação das atividades práticas desenvolvidas para a disciplina de **Estrutura de Dados** da **UFPB** (*Universidade Federal da Paraíba*). 
 
