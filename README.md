@@ -20,8 +20,9 @@ O repositório está estruturado em pastas separadas por listas de exercícios o
 
 | Pasta / Lista | Descrição Resumida | Tecnologias / Conceitos |
 | :--- | :--- | :--- |
-| **`Lista_04/`** | Implementação e manipulação de listas sequenciais e estáticas (adicionar, remover, novas funções). | Linguagem C, Ponteiros, Alocação Estática, Makefiles. |
-| **`Lista_05/`** | Expansão de funcionalidades para listas dinâmicas encadeadas com critérios de prioridade e organização. | Linguagem C, Alocação Dinâmica, Manipulação Avançada de Nós. |
+| **`Lista_sequencial_estatica/`** | Implementação e manipulação de listas sequenciais e estáticas (adicionar, remover, novas funções). | Linguagem C, Ponteiros, Alocação Estática, Makefile. |
+| **`Lista_dinamica_encadeada/`** | Expansão de funcionalidades para listas dinâmicas encadeadas. | Linguagem C, Alocação Dinâmica, Manipulação Avançada de Nós, Makefile. |
+| **`Lista_dinamica_encadeada_circular/`** | Expansão de funcionalidades para listas dinâmicas encadeadas circulares. Há tanto a representação armazenando o início da lista, quanto armazenando o final para fins de otimização. | Linguagem C, Alocação Dinâmica, Manipulação Avançada de Nós, Makefile. |
 | *Próximas Listas* | *Em breve: Pilhas, Filas, Árvores, etc.* | *Estruturas de Dados Lineares e Não-Lineares* |
 
 > **Nota:** Cada pasta de lista possui o seu próprio `README.md` detalhado, explicando o escopo da atividade específica, os requisitos exigidos pelo professor e instruções de como compilar e executar o código daquela lista em particular.
@@ -30,12 +31,11 @@ O repositório está estruturado em pastas separadas por listas de exercícios o
 
 ## Como Compilar e Testar os Projetos
 
-Cada lista possui o seu próprio arquivo de automação (`Makefile`). Para compilar e rodar qualquer uma das listas, siga o padrão abaixo:
+Cada lista possui o seu próprio arquivo de automação (`Makefile`). Para compilar e rodar a maioria das listas, siga o padrão abaixo:
 
 1. Acesse a pasta da lista desejada via terminal:
-   ```bash
-   cd Lista_0X
-
+```bash
+cd Lista_X
 ```
 
 2. Compile o projeto utilizando o Makefile:
@@ -50,7 +50,7 @@ make programa
 ./build/programa
 
 ```
-
+* **Observação**: Algumas listas possuem variações na compilação, então é recomendado ler o README de cada lista antes de compilar dessa forma.
 
 
 ---
