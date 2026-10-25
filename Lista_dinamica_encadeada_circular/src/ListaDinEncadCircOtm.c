@@ -128,20 +128,19 @@ int insere_lista_ordenada(Lista* lf, struct aluno al) {
         no->prox = no;
         return 1;
     }
-    if ((*lf)->dados.matricula > al.matricula) {   /* insercao no inicio */
-        Elem *atual = *lf;
-        while (atual->prox != (*lf))               /* procura o ultimo */
-            atual = atual->prox;
-        no->prox = *lf;
-        atual->prox = no;
-        *lf = no;
+    if (((*lf)->prox)->dados.matricula > al.matricula) {   /* insercao no inicio */
+        no->prox = (*lf)->prox;
+        (*lf)->prox = no;
         return 1;
     }
     /* insercao no meio ou no final: ant acompanha atual uma posicao atras */
-    Elem *ant = *lf, *atual = (*lf)->prox;
-    while (atual != (*lf) && atual->dados.matricula < al.matricula) {
+    Elem *ant = (*lf)->prox, *atual = ant->prox;
+    while (atual != (*lf)->prox && atual->dados.matricula < al.matricula) {
         ant = atual;
         atual = atual->prox;
+    }
+    if (atual == (*lf)->prox) {
+        (*lf) = no;
     }
     ant->prox = no;
     no->prox = atual;
@@ -176,13 +175,13 @@ int remove_lista_final(Lista* lf) {
         *lf = NULL;
         return 1;
     }
-    Elem *ant = NULL, *no = *lf;
-    while (no->prox != (*lf)) {   /* procura o ultimo, guardando o anterior */
-        ant = no;
+    Elem *no = (*lf)->prox;
+    while (no->prox != (*lf)) {   /* procura o penultimo */
         no = no->prox;
     }
-    ant->prox = no->prox;         /* o penultimo passa a apontar para o inicio */
-    free(no);
+    no->prox = (*lf)->prox;
+    free((*lf));
+    (*lf) = no;
     return 1;
 }
 
@@ -191,18 +190,14 @@ int remove_lista(Lista* lf, int mat) {
         return 0;
     if ((*lf) == NULL)
         return 0;           /* lista vazia */
-    Elem *no = *lf;
+    Elem *no = (*lf)->prox;
     if (no->dados.matricula == mat) {      /* remocao do inicio */
         if (no == no->prox) {              /* a lista fica vazia */
             free(no);
             *lf = NULL;
             return 1;
         } else {
-            Elem *ult = *lf;
-            while (ult->prox != (*lf))     /* procura o ultimo */
-                ult = ult->prox;
-            ult->prox = (*lf)->prox;
-            *lf = (*lf)->prox;
+            (*lf)->prox = no->prox;
             free(no);
             return 1;
         }
@@ -210,12 +205,15 @@ int remove_lista(Lista* lf, int mat) {
     Elem *ant = no;
     no = no->prox;
     /* para ao encontrar a matricula ou ao completar uma volta */
-    while (no != (*lf) && no->dados.matricula != mat) {
+    while (no != (*lf)->prox && no->dados.matricula != mat) {
         ant = no;
         no = no->prox;
     }
-    if (no == (*lf))
+    if (no == (*lf)->prox)
         return 0;           /* chave ausente */
+    if (no == (*lf)) {
+        (*lf) = ant;
+    }
     ant->prox = no->prox;
     free(no);
     return 1;
@@ -226,10 +224,10 @@ int remove_lista(Lista* lf, int mat) {
 int busca_lista_pos(Lista* lf, int pos, struct aluno *al) {
     if (lf == NULL || (*lf) == NULL || pos <= 0)
         return 0;
-    Elem *no = *lf;
+    Elem *no = (*lf)->prox;
     int i = 1;
     /* para no ultimo elemento ou ao alcancar a posicao desejada */
-    while (no->prox != (*lf) && i < pos) {
+    while (no != (*lf) && i < pos) {
         no = no->prox;
         i++;
     }
@@ -244,9 +242,9 @@ int busca_lista_pos(Lista* lf, int pos, struct aluno *al) {
 int busca_lista_mat(Lista* lf, int mat, struct aluno *al) {
     if (lf == NULL || (*lf) == NULL)
         return 0;
-    Elem *no = *lf;
+    Elem *no = (*lf)->prox;
     /* para no ultimo elemento ou ao encontrar a matricula */
-    while (no->prox != (*lf) && no->dados.matricula != mat)
+    while (no != (*lf) && no->dados.matricula != mat)
         no = no->prox;
     if (no->dados.matricula != mat)
         return 0;           /* chave ausente */
@@ -272,10 +270,10 @@ void imprime_lista(Lista* lf) {
 int maior_matricula(Lista* lf, int *mat) {
     if (lf == NULL) return 0;
     if ((*lf) == NULL) return 0;
-    Elem *no = (*lf);
+    Elem *no = (*lf)->prox;
     int max = no->dados.matricula;
     no = no->prox;
-    while (no != (*lf)) {
+    while (no != (*lf)->prox) {
         if (no->dados.matricula > max) {
             max = no->dados.matricula;
         }
@@ -289,7 +287,7 @@ int maior_matricula(Lista* lf, int *mat) {
 int conta_aprovados(Lista* lf) {
     if (lf == NULL) return -1;
     if ((*lf) == NULL) return -1;
-    Elem *no = (*lf);
+    Elem *no = (*lf)->prox;
     int count = 0;
     do {
         float media = (no->dados.n1 + no->dados.n2 + no->dados.n3) / 3.0f;
@@ -297,19 +295,28 @@ int conta_aprovados(Lista* lf) {
             count++;
         }
         no = no->prox;
-    } while (no != (*lf));
+    } while (no != (*lf)->prox);
+
     return count;
 }
 
 int busca_ciclica(Lista* lf, int k, struct aluno *al) {
     if (lf == NULL || (*lf) == NULL || k <= 0) return 0;
-    Elem *no = (*lf);
+    Elem *no = (*lf)->prox;
     int i = 1, tam_lista = tamanho_lista(lf), pos;
 
-    if (k > tam_lista) {
+    if (k == tam_lista) {
+        *al = (*lf)->dados;
+        return 1;
+    } else if (k > tam_lista) {
         pos = k % tam_lista;
     } else {
         pos = k;
+    }
+
+    if (pos == 0) {
+        *al = (*lf)->dados;
+        return 1;
     }
 
     while (i < pos) {
@@ -326,17 +333,20 @@ int remove_lista_pos(Lista* lf, int pos) {
         if (!remove_lista_inicio(lf)) return 0;
         return 1;
     } else {
-        Elem *no = (*lf), *ant = NULL;
+        Elem *no = (*lf)->prox, *ant = NULL;
         int i = 1;
         do {
             ant = no;
             no = no->prox;
             i++;
-        } while (i < pos && no != (*lf));
+        } while (i < pos && no != (*lf)->prox);
 
-        if (no == (*lf)) {
+        if (no == (*lf)->prox) {
             return 0; // Posição fora da lista (Voltou para o inicio)
         } else {
+            if (no == (*lf)) {
+                (*lf) = ant;
+            }
             ant->prox = no->prox;
             free(no);
             return 1;
@@ -365,17 +375,10 @@ int concatena_listas(Lista* lf1, Lista* lf2) {
     } else if ((*lf1) == NULL && (*lf2) == NULL) {
         return 0;
     } else {
-        Elem *no = (*lf1);
-        while (no->prox != (*lf1)) {
-            no = no->prox;
-        }
-        no->prox = (*lf2);
-
-        Elem *no2 = (*lf2);
-        while (no2->prox != (*lf2)) {
-            no2 = no2->prox;
-        }
-        no2->prox = (*lf1);
+        Elem *aux = (*lf1)->prox;
+        (*lf1)->prox = (*lf2)->prox;
+        (*lf2)->prox = aux;
+        (*lf1) = (*lf2);
         (*lf2) = NULL;
         return 1;
     }
@@ -383,18 +386,14 @@ int concatena_listas(Lista* lf1, Lista* lf2) {
 
 int josephus(Lista* lf, int k, int *sobrevivente) {
     if (lf == NULL || (*lf) == NULL || k <= 0) return 0;
-    Elem *no = (*lf), *ant = NULL;
+    Elem *no = (*lf)->prox, *ant = NULL;
     if (k == 1) {
-        no = no->prox;
-        while (no->prox != (*lf)) {
+        *sobrevivente = (*lf)->dados.matricula;
+        while (no->prox != (*lf)->prox) {
             ant = no;
             no = no->prox;
             free(ant);
         }
-        *sobrevivente = no->dados.matricula;
-        ant = no;
-        no = no->prox;
-        free(ant);
         free(no);
         (*lf) = NULL;
         return 1;

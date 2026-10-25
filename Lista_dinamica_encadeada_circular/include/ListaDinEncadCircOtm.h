@@ -72,17 +72,13 @@ int lista_vazia(Lista* lf);
    Em uma lista circular, inserir no inicio e inserir no final
    colocam o novo elemento na MESMA posicao fisica: entre o
    ultimo e o primeiro. A unica diferenca entre as duas funcoes
-   e a atribuicao final *li = no, presente apenas na insercao
-   no inicio. ------------------------------------------------ */
+   e a atribuicao final *lf = no, presente apenas na insercao
+   no final. ------------------------------------------------ */
 
-/* Percorre a lista para achar o ultimo elemento, insere entre ele
-   e o primeiro, e passa a ser o novo inicio. Custo O(n).
-   Na lista nao circular da Aula 06 esta operacao era O(1): o
-   percurso e o preco da circularidade nesta representacao. */
+/* Insere depois do final. Custo O(1) */
 int insere_lista_inicio(Lista* lf, struct aluno al);
 
-/* Percorre a lista para achar o ultimo elemento e insere depois
-   dele, sem alterar o inicio. Custo O(n). */
+/* Insere depois do final. Custo O(1). */
 int insere_lista_final(Lista* lf, struct aluno al);
 
 /* Insere mantendo a lista ordenada de forma crescente por
@@ -95,12 +91,10 @@ int insere_lista_ordenada(Lista* lf, struct aluno al);
    (lista invalida, lista vazia ou elemento inexistente).
 
    As tres tratam antes de tudo o caso do elemento unico, que e
-   reconhecido pelo teste (*li) == (*li)->prox: o no aponta para
+   reconhecido pelo teste (*lf) == (*lf)->prox: o no aponta para
    si mesmo e a lista fica vazia apos a remocao. -------------- */
 
-/* Percorre a lista para achar o ultimo elemento, que aponta para
-   o que sera removido, e religa o ciclo. Custo O(n).
-   Tambem era O(1) na lista nao circular da Aula 06. */
+/* Usa o ponteiro armazenando o final da lista e remove o inicio. Custo O(1) */
 int remove_lista_inicio(Lista* lf);
 
 /* Percorre a lista mantendo o antecessor, remove o ultimo e
@@ -129,24 +123,37 @@ int busca_lista_mat(Lista* lf, int mat, struct aluno *al);
 
 // Funções implementadas requeridas pela atividade:
 
+/* Imprime todos os elementos da lista. Custo O(n)*/
 void imprime_lista(Lista* lf);
 
+/* Imprime a maior matricula presente na lista. Custo O(n)*/
 int maior_matricula(Lista* lf, int *mat);
 
+/* Imprime a quantidade de alunos na lista que possuem uma media maior ou igual a 7. Custo O(n)*/
 int conta_aprovados(Lista* lf); 
 
+/* Busca um elemento dentro da lista, permitindo ultrapassar a quantidade de elementos (dá voltas na lista
+aproveitando a circularidade). Para k maior que o numero de elementos da lista, o custo é O(n)*/
 int busca_ciclica(Lista* lf, int k, struct aluno *al);
 
+/* Remove o elemento da posição passada da lista. Custo O(n)*/
 int remove_lista_pos(Lista* lf, int pos);
 
+/* Muda o inicio da lista para a posicao k+1. Para k maior que o numero de elementos da lista
+o custo é O(n)*/
 int rotaciona_lista(Lista* lf, int k);
 
+/* Junta as duas listas passadas na primeira lista e esvazia a segunda lista. Custo O(1)*/
 int concatena_listas(Lista* lf1, Lista* lf2);
 
+/* Resolve o problema de josephus e imprime a ultima matricula restante da lista (
+ao final esvazia a lista). Custo O(n)*/
 int josephus(Lista* lf, int k, int *sobrevivente);
 
+/* Cria um aluno, pedindo que o usuario digite os campos*/
 void criar_aluno(struct aluno *al);
 
+/* Imprime os campos do aluno buscado*/
 void imprime_aluno_buscado(struct aluno *al);
 
 #endif

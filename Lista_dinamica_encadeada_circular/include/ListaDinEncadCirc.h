@@ -129,24 +129,37 @@ int busca_lista_mat(Lista* li, int mat, struct aluno *al);
 
 // Funções implementadas requeridas pela atividade:
 
+/* Imprime todos os elementos da lista. Custo O(n)*/
 void imprime_lista(Lista* li);
 
+/* Imprime a maior matricula presente na lista. Custo O(n)*/
 int maior_matricula(Lista* li, int *mat);
 
+/* Imprime a quantidade de alunos na lista que possuem uma media maior ou igual a 7. Custo O(n)*/
 int conta_aprovados(Lista* li); 
 
+/* Busca um elemento dentro da lista, permitindo ultrapassar a quantidade de elementos (dá voltas na lista
+aproveitando a circularidade). Para k maior que o numero de elementos da lista, o custo é O(n)*/
 int busca_ciclica(Lista* li, int k, struct aluno *al);
 
+/* Remove o elemento da posição passada da lista. Custo O(n)*/
 int remove_lista_pos(Lista* li, int pos);
 
+/* Muda o inicio da lista para a posicao k+1. Para k maior que o numero de elementos da lista
+o custo é O(n)*/
 int rotaciona_lista(Lista* li, int k);
 
+/* Junta as duas listas passadas na primeira lista e esvazia a segunda lista. Custo O(1)*/
 int concatena_listas(Lista* li1, Lista* li2);
 
+/* Resolve o problema de josephus e imprime a ultima matricula restante da lista (
+ao final esvazia a lista). Custo O(n)*/
 int josephus(Lista* li, int k, int *sobrevivente);
 
+/* Cria um aluno, pedindo que o usuario digite os campos*/
 void criar_aluno(struct aluno *al);
 
+/* Imprime os campos do aluno buscado*/
 void imprime_aluno_buscado(struct aluno *al);
 
 #endif /* LISTA_DIN_ENCAD_CIRC_H */

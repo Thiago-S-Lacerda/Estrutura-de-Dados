@@ -322,6 +322,10 @@ int busca_ciclica(Lista* li, int k, struct aluno *al) {
         pos = k;
     }
 
+    if (pos == 0) {
+        pos = tam_lista;
+    }
+
     while (i < pos) {
         no = no->prox;
         i++;
