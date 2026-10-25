@@ -1,3 +1,5 @@
-build
+**/build/*
+exemplosed1-main
 exemplosed1-main/*
 *.exe
+*.o
