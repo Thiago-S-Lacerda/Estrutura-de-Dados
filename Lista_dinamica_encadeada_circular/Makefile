@@ -14,7 +14,7 @@ build/programa_otm: build/mainOtm.o build/ListaDinEncadCircOtm.o build/menuOtm.o
 	$(CC) $(CFLAGS) -o build/programa_otm build/mainOtm.o build/ListaDinEncadCircOtm.o build/menuOtm.o -lm
 
 build:
-	mkdir build
+	mkdir -p build
 
 build/main.o: src/main.c include/ListaDinEncadCirc.h
 	$(CC) $(CFLAGS) -c src/main.c -o build/main.o

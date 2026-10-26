@@ -7,7 +7,7 @@ build/programa: build/main.o build/lista.o build/menu.o
 	$(CC) $(CFLAGS) -o build/programa build/main.o build/lista.o build/menu.o -lm
 
 build:
-	mkdir build
+	mkdir -p build
 
 build/main.o: src/main.c include/lista.h include/menu.h
 	$(CC) $(CFLAGS) -c src/main.c -o build/main.o
