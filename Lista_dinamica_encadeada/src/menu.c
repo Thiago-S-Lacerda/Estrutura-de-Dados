@@ -343,8 +343,8 @@ void caso4(ListaTarefas *li, ListaTarefas *li2, struct tarefa *t) {
             break;
         case 7:
             int count = mescla_tarefas(li, li2);
-            if (quant != -1) {
-                printf("%d tarefas foram mescladas\n", quant);
+            if (count != -1) {
+                printf("%d tarefas foram mescladas\n", count);
                 printf("Lista depois da mesclagem: \n\n");
                 printar_lista(li);
             } else {

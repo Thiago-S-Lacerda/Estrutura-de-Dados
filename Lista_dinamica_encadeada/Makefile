@@ -1,8 +1,13 @@
 CC     = gcc
 CFLAGS = -Wall -Wextra -std=c11 -g -Iinclude
 
-programa: build/main.o build/ListaDinEncad.o build/menu.o
+programa: build build/programa
+
+build/programa: build/main.o build/ListaDinEncad.o build/menu.o
 	$(CC) $(CFLAGS) -o build/programa build/main.o build/ListaDinEncad.o build/menu.o -lm
+
+build:
+	mkdir build
 
 build/main.o: src/main.c include/ListaDinEncad.h include/menu.h
 	$(CC) $(CFLAGS) -c src/main.c -o build/main.o

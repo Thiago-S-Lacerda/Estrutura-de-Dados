@@ -1,5 +1,8 @@
 **/build/*
+!**/build/.gitkeep
+
 exemplosed1-main
 exemplosed1-main/*
+
 *.exe
 *.o

@@ -3,11 +3,18 @@ CFLAGS = -Wall -Wextra -std=c11 -g -Iinclude
 
 all: programa programa_otm
 
-programa: build/main.o build/ListaDinEncadCirc.o build/menu.o
+programa: build build/programa
+
+programa_otm: build build/programa_otm
+
+build/programa: build/main.o build/ListaDinEncadCirc.o build/menu.o
 	$(CC) $(CFLAGS) -o build/programa build/main.o build/ListaDinEncadCirc.o build/menu.o -lm
 
-programa_otm: build/mainOtm.o build/ListaDinEncadCircOtm.o build/menuOtm.o
+build/programa_otm: build/mainOtm.o build/ListaDinEncadCircOtm.o build/menuOtm.o
 	$(CC) $(CFLAGS) -o build/programa_otm build/mainOtm.o build/ListaDinEncadCircOtm.o build/menuOtm.o -lm
+
+build:
+	mkdir build
 
 build/main.o: src/main.c include/ListaDinEncadCirc.h
 	$(CC) $(CFLAGS) -c src/main.c -o build/main.o
