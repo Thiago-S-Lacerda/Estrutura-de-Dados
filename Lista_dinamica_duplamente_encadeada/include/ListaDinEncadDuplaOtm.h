@@ -22,8 +22,8 @@
    consistentes, e a religacao vem sempre antes do free.
    ============================================================ */
 
-#ifndef LISTA_DIN_ENCAD_DUPLA_H
-#define LISTA_DIN_ENCAD_DUPLA_H
+#ifndef LISTA_DIN_ENCAD_DUPLA_OTM_H
+#define LISTA_DIN_ENCAD_DUPLA_OTM_H
 
 /* Tipo do dado armazenado na lista. */
 struct aluno {
@@ -120,20 +120,37 @@ int busca_lista_mat(Lista* li, int mat, struct aluno *al);
 
 // Funções implementadas requeridas pela atividade:
 
+/*Imprime as matrículas da lista na ordem inversa*/
 void imprime_lista_inversa(Lista* li);
 
+/*Verifica a consistência dos ponteiros na lista. Custo O(n)*/
 int lista_consistente(Lista* li);
 
-int remove_lista_question3(Lista* li, int mat);
-
+/*Remove o aluno na posição da lista passada. Custo O(n)*/
 int remove_lista_pos(Lista* li, int pos);
 
+/*Move o aluno com a mesma matrícula passada para o início da lista. Custo O(n)*/
 int move_para_inicio(Lista* li, int mat);
 
+/*Remove todos os alunos com a matricula passada. Custo O(n)*/
 int remove_todos(Lista* li, int mat);
 
+/*Inverte toda a lista apenas alterando os ponteiros. Custo O(n)*/
 void inverte_lista(Lista* li);
 
+/*Verifica se as matriculas formam um palindromo. Custo O(n)*/
 int eh_palindromo(Lista* li);
 
-#endif /* LISTA_DIN_ENCAD_DUPLA_H */
+// Funções desenvolvidas a parte:
+
+/*Imprime todas as matriculas na ordem normal*/
+void imprime_lista(Lista* li);
+
+/*Cria um aluno*/
+void criar_aluno(struct aluno *al);
+
+/*Imprime os campos do aluno buscado*/
+void imprime_aluno_buscado(struct aluno *al);
+
+
+#endif

@@ -15,7 +15,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "ListaDinEncadDupla.h"
+#include <string.h>
+#include "ListaDinEncadDuplaOtm.h"
 
 /* Definicao do tipo lista: oculta de quem usa a biblioteca.
    Com struct aluno de 48 bytes, sizeof(Elem) = 64 bytes em uma
@@ -37,15 +38,16 @@ Lista* cria_lista(void) {
 }
 
 void libera_lista(Lista* li) {
-    if (li != NULL) {
-        Elem* no;
-        while ((*li) != NULL) {
+    if (li == NULL) return;
+    if ((*li) != NULL) {
+        Elem* inicio = (*li), *no = NULL;
+        do {
             no = *li;
             *li = (*li)->prox;   /* avanca antes de liberar */
             free(no);
-        }
-        free(li);                /* libera o bloco do inicio */
+        } while ((*li) != inicio); 
     }
+    free(li); 
 }
 
 /* --- informacoes de estado --------------------------------- */
@@ -55,10 +57,10 @@ int tamanho_lista(Lista* li) {
         return 0;
     int cont = 0;
     Elem* no = *li;
-    while (no != NULL) {
+    do {
         cont++;
         no = no->prox;
-    }
+    } while (no != (*li));
     return cont;
 }
 
@@ -82,11 +84,16 @@ int insere_lista_inicio(Lista* li, struct aluno al) {
     Elem* no = (Elem*) malloc(sizeof(Elem));
     if (no == NULL) return 0;    /* sem memoria: a lista esta cheia */
     no->dados = al;
-    no->prox = (*li);
-    no->ant = NULL;
-    if (*li != NULL)             /* lista nao vazia */
-        (*li)->ant = no;         /* o antigo primeiro ganha antecessor */
-    *li = no;
+    if ((*li) != NULL) {
+        no->prox = (*li);
+        no->ant = (*li)->ant;
+        (*li)->ant->prox = no;
+        (*li)->ant = no;    
+    } else {
+        no->prox = no;
+        no->ant = no;
+    }
+    (*li) = no;
     return 1;
 }
 
@@ -95,17 +102,16 @@ int insere_lista_final(Lista* li, struct aluno al) {
     Elem* no = (Elem*) malloc(sizeof(Elem));
     if (no == NULL) return 0;
     no->dados = al;
-    no->prox = NULL;
     if ((*li) == NULL) {         /* lista vazia: insere inicio */
-        no->ant = NULL;
-        *li = no;
+        no->prox = no;
+        no->ant = no;
+        (*li) = no;
     } else {
-        Elem* aux = *li;
-        while (aux->prox != NULL) {
-            aux = aux->prox;
-        }
-        aux->prox = no;
-        no->ant = aux;
+        Elem* ult = (*li)->ant;
+        ult->prox = no;
+        no->prox = (*li);
+        (*li)->ant = no;
+        no->ant = ult;
     }
     return 1;
 }
@@ -116,32 +122,42 @@ int insere_lista_ordenada(Lista* li, struct aluno al) {
     if (no == NULL) return 0;
     no->dados = al;
     if ((*li) == NULL) {         /* lista vazia: insere inicio */
-        no->prox = NULL;
-        no->ant = NULL;
-        *li = no;
+        no->prox = no;
+        no->ant = no;
+        (*li) = no;
         return 1;
     }
     else {
         /* O livro declara ante sem valor inicial. A inicializacao com
            NULL nao altera o comportamento e elimina o aviso
            "may be used uninitialized" do gcc com -O2. */
-        Elem *ante = NULL, *atual = *li;
-        while (atual != NULL &&
+        Elem *ante = (*li), *atual = (*li);
+        if (atual->dados.matricula >= al.matricula) {
+            no->ant = (*li)->ant;
+            (*li)->ant->prox = no;
+            (*li)->ant = no;
+            no->prox = (*li);
+            (*li) = no;
+            return 1;
+        } else {
+            atual = atual->prox;
+        }
+        while (atual != (*li) &&
                atual->dados.matricula < al.matricula) {
             ante = atual;
             atual = atual->prox;
         }
-        if (atual == *li) {      /* insere inicio */
-            no->ant = NULL;
-            (*li)->ant = no;
+        if (atual == (*li)) {
+            Elem* ult = (*li)->ant;
+            ult->prox = no;
             no->prox = (*li);
-            *li = no;
-        } else {                 /* insere no meio ou no final */
+            (*li)->ant = no;
+            no->ant = ult;
+        } else {                 /* insere no meio*/
             no->prox = ante->prox;
             no->ant = ante;
             ante->prox = no;
-            if (atual != NULL)   /* nao e o ultimo */
-                atual->ant = no;
+            atual->ant = no;
         }
         return 1;
     }
@@ -152,42 +168,58 @@ int insere_lista_ordenada(Lista* li, struct aluno al) {
 int remove_lista_inicio(Lista* li) {
     if (li == NULL) return 0;
     if ((*li) == NULL) return 0;   /* lista vazia */
-    Elem* no = *li;
-    *li = no->prox;
-    if (no->prox != NULL)          /* existe um seguinte */
-        no->prox->ant = NULL;      /* ele passa a ser o primeiro */
-    free(no);
+    Elem* no = (*li), *ult = (*li)->ant;
+    if (no->prox == no) {
+        free(no);
+        (*li) = NULL;
+    } else {
+        (*li) = no->prox;
+        no->prox->ant = ult;
+        ult->prox = no->prox;
+        free(no);
+    }
     return 1;
 }
 
 int remove_lista_final(Lista* li) {
     if (li == NULL) return 0;
     if ((*li) == NULL) return 0;   /* lista vazia */
-    Elem* no = *li;
-    while (no->prox != NULL)
-        no = no->prox;
-    if (no->ant == NULL)           /* primeiro e unico */
-        *li = no->prox;
-    else
-        no->ant->prox = NULL;      /* penultimo obtido pelo proprio no */
-    free(no);
+    Elem* ult = (*li)->ant;
+    if (ult->prox == ult) {
+        free(ult);
+        (*li) = NULL;
+    } else {
+        Elem *pen = (*li)->ant->ant;
+        pen->prox = (*li);
+        (*li)->ant = pen;
+        free(ult);
+    }
     return 1;
 }
 
 int remove_lista(Lista* li, int mat) {
     if (li == NULL) return 0;
     if ((*li) == NULL) return 0;   /* lista vazia */
-    Elem* no = *li;
-    while (no != NULL && no->dados.matricula != mat)
+    Elem* no = (*li), *ult = (*li)->ant;
+    if (no->dados.matricula == mat) {
+        if (no->prox == no) {
+            free(no);
+            (*li) = NULL;
+        } else {
+            (*li) = no->prox;
+            no->prox->ant = ult;
+            ult->prox = no->prox;
+            free(no);
+        }
+        return 1;
+    }
+    no = no->prox;
+    while (no != (*li) && no->dados.matricula != mat)
         no = no->prox;
-    if (no == NULL)                /* chave ausente */
+    if (no->dados.matricula != mat)                /* chave ausente */
         return 0;
-    if (no->ant == NULL)           /* remove o primeiro */
-        *li = no->prox;
-    else
-        no->ant->prox = no->prox;
-    if (no->prox != NULL)          /* nao e o ultimo */
-        no->prox->ant = no->ant;
+    no->ant->prox = no->prox;
+    no->prox->ant = no->ant;
     free(no);
     return 1;
 }
@@ -195,15 +227,15 @@ int remove_lista(Lista* li, int mat) {
 /* --- busca ------------------------------------------------- */
 
 int busca_lista_pos(Lista* li, int pos, struct aluno *al) {
-    if (li == NULL || pos <= 0)
+    if (li == NULL || (*li) == NULL || pos <= 0)
         return 0;
-    Elem *no = *li;
+    Elem *no = (*li);
     int i = 1;
-    while (no != NULL && i < pos) {
+    while (no->prox != (*li) && i < pos) {
         no = no->prox;
         i++;
     }
-    if (no == NULL)
+    if (i != pos)
         return 0;
     else {
         *al = no->dados;
@@ -212,12 +244,12 @@ int busca_lista_pos(Lista* li, int pos, struct aluno *al) {
 }
 
 int busca_lista_mat(Lista* li, int mat, struct aluno *al) {
-    if (li == NULL)
+    if (li == NULL || (*li) == NULL)
         return 0;
-    Elem *no = *li;
-    while (no != NULL && no->dados.matricula != mat)
+    Elem *no = (*li);
+    while (no->prox != (*li) && no->dados.matricula != mat)
         no = no->prox;
-    if (no == NULL)
+    if (no->dados.matricula != mat)
         return 0;
     else {
         *al = no->dados;
@@ -232,52 +264,26 @@ void imprime_lista_inversa(Lista* li) {
         printf("Lista vazia\n");
         return;
     }
-    Elem *no = (*li);
-    while (no->prox != NULL) {
-        no = no->prox;
-    }
-
-    while (no != NULL) {
+    Elem *no = (*li)->ant;
+    while (no != (*li)) {
         printf("%d ", no->dados.matricula);
         no = no->ant;
-    }
+    } 
+    printf("%d ", no->dados.matricula);
     printf("\n");
 }
 
 int lista_consistente(Lista* li) {
     if (li == NULL) return 0;
     if ((*li) == NULL) return 1;
-    Elem *no = (*li);
-    if (no->ant != NULL) return 0;
-    while (no->prox != NULL) {
+    Elem *no = (*li), *ult = (*li)->ant;
+    do {
         if (no->prox->ant != no) return 0;
         no = no->prox;
-    }
+    } while (no->prox != (*li));
+    if (no != ult) return 0;
+    if (ult->prox != (*li)) return 0;
     return 1;
-}
-
-int remove_lista_question3(Lista* li, int mat) {
-    if(li == NULL) return 0;
-    if((*li) == NULL) return 0;
-    Elem* no = *li;
-    while(no != NULL && no->dados.matricula != mat)
-        no = no->prox;
-    if(no == NULL) return 0;
-    if (no == (*li)) {
-        (*li) = no->prox;
-        if (no->prox != NULL) {
-            no->prox->ant = NULL;
-        }
-        free(no);
-        return 1;
-    } else {
-        no->ant->prox = no->prox;
-        if (no->prox != NULL) {
-            no->prox->ant = no->ant;
-        }
-        free(no);
-        return 1;
-    }
 }
 
 int remove_lista_pos(Lista* li, int pos) {
@@ -285,19 +291,20 @@ int remove_lista_pos(Lista* li, int pos) {
     Elem *no = (*li);
 
     int i = 1;
-    while (no != NULL && i < pos) {
+    while (no->prox != (*li) && i < pos) {
         no = no->prox;
+        i++;
     }
 
-    if (no == NULL) return 0;
-    if (no->ant == NULL) {
+    if (i != pos) return 0;
+    if (no->ant == no) {
         (*li) = NULL;
     } else {
         no->ant->prox = no->prox;
-        if (no->prox != NULL) {
-            no->prox->ant = no->ant;
+        if (no == (*li)) {
+            (*li) = no->prox;
         }
-
+        no->prox->ant = no->ant;
     }
     free(no);
     return 1;
@@ -309,16 +316,20 @@ int move_para_inicio(Lista* li, int mat) {
     Elem *no = (*li);
     if (no->dados.matricula == mat) return 1;
     no = no->prox;
-    while (no != NULL && no->dados.matricula != mat) {
+    while (no != (*li) && no->dados.matricula != mat) {
         no = no->prox;
     }
-    if (no == NULL) return 0;
+    if (no == (*li)) return 0;
+    Elem *pen = (*li)->ant->ant;
     no->ant->prox = no->prox;
-    if (no->prox != NULL) {
-        no->prox->ant = no->ant;
+    no->prox->ant = no->ant;
+    if (no->prox != (*li)) {
+        no->ant = (*li)->ant;
+    } else {
+        no->ant = pen;
     }
-    no->ant = NULL;
     no->prox = (*li);
+    (*li)->ant->prox = no;
     (*li)->ant = no;
     (*li) = no;
     return 1;
@@ -327,23 +338,22 @@ int move_para_inicio(Lista* li, int mat) {
 int remove_todos(Lista* li, int mat) {
     if (li == NULL) return 0;
     if ((*li) == NULL) return 0;
-    Elem *no = (*li);                      // 3 5 7
+    Elem *no = (*li);
     int count = 0;
-    while (no != NULL) {
+    do {
         if (no->dados.matricula == mat) {
-            if (no->ant == NULL && no->prox == NULL) {
+            count++;
+            if (no->ant == no) {
                 free(no);
                 no = NULL;
                 (*li) = NULL;
-            } else if (no->ant == NULL) {
-                no->prox->ant = NULL;
+                return count;
+            } else if (no == (*li)) {
+                no->prox->ant = (*li)->ant;
+                (*li)->ant->prox = no->prox;
                 (*li) = (*li)->prox;
                 free(no);
                 no = (*li);
-            } else if (no->prox == NULL) {
-                no->ant->prox = no->prox;
-                free(no);
-                no = NULL;
             } else {
                 Elem *aux = no->prox;
                 no->ant->prox = no->prox;
@@ -351,9 +361,21 @@ int remove_todos(Lista* li, int mat) {
                 free(no);
                 no = aux;
             }
-            count++;
         } else {
             no = no->prox;
+        }
+    } while (no->prox != (*li));
+
+    if (no->dados.matricula == mat) {
+        count++;
+        if (no->prox == no) {
+            free(no);
+            (*li) = NULL;
+        } else {
+            no->ant->prox = no->prox;
+            (*li)->ant = no->ant;
+            free(no);
+            no = NULL;
         }
     }
     return count;
@@ -365,36 +387,30 @@ void inverte_lista(Lista* li) {
         return;
     }
     if ((*li) == NULL) return;
-    if ((*li)->prox == NULL) return;
+    if ((*li)->prox == (*li)) return;
 
-    Elem *no = (*li), *ante = (*li);
+    Elem *no = (*li), *ante = (*li), *pri = (*li), *ult = (*li)->ant;
     no->ant = no->prox;
-    no->prox = NULL;
+    no->prox = ult;
     no = no->ant;
-    while (no->prox != NULL) {
+    while (no->prox != pri) {
         ante = no;
         no = no->prox;
         ante->prox = ante->ant;
         ante->ant = no;
     }
     no->prox = ante;
-    no->ant = NULL;
+    no->ant = pri;
     (*li) = no;
-    if (!lista_consistente(li)) {
-        printf("Erro na lista\n");
-    }
 }
 
 int eh_palindromo(Lista* li) {
     if (li == NULL) return 0;
-    if ((*li) == NULL || (*li)->prox == NULL) return 1;
-    Elem *inicio = (*li), *final = (*li);
-    while (final->prox != NULL) {
-        final = final->prox;
-    }
+    if ((*li) == NULL || (*li)->prox == (*li)) return 1;
+    Elem *inicio = (*li), *final = (*li)->ant;
 
     int flag = 0;
-    while (inicio != final && final->prox != inicio) {
+    while (inicio != final && (final->prox != inicio || inicio == (*li))) {
         if (inicio->dados.matricula != final->dados.matricula) {
             flag = 1;
             break;
@@ -408,4 +424,53 @@ int eh_palindromo(Lista* li) {
     } else {
         return 1;
     }
+}
+
+// Funções desenvolvidas a parte:
+
+void imprime_lista(Lista* li) {
+    if (li == NULL || (*li) == NULL) {
+        printf("Lista vazia\n");
+        return;
+    }
+    Elem *no = (*li);
+
+    do {
+        printf("%d ", no->dados.matricula);
+        no = no->prox;
+    } while (no != (*li));
+    printf("\n");
+}
+
+void criar_aluno(struct aluno *al) {
+    int matricula = 0;
+    char nome[30] = "";
+    float nota1 = 0, nota2 = 0, nota3 = 0;
+
+    printf("Digite a matricula do aluno: ");
+    scanf("%d", &matricula);
+    printf("Digite o nome do aluno: ");
+    scanf("%s", nome);
+    printf("Digite as 3 notas do aluno; (exemplo: n1/n2/n3)\nDigite aqui: ");
+    scanf("%f/%f/%f", &nota1, &nota2, &nota3);
+
+    al->matricula = matricula;
+    strcpy(al->nome, nome);
+    al->n1 = nota1;
+    al->n2 = nota2;
+    al->n3 = nota3;
+}
+
+void imprime_aluno_buscado(struct aluno *al) {
+    printf("\033[2J\033[H");
+    printf("\n================================\n");
+    printf("Matricula do aluno buscado: %d\n", al->matricula);
+    printf("Nome do aluno buscado: %s\n", al->nome);
+    printf("Nota 1 do aluno buscado: %.2f\n", al->n1);
+    printf("Nota 2 do aluno buscado: %.2f\n", al->n2);
+    printf("Nota 3 do aluno buscado: %.2f\n", al->n3);
+    printf("\n================================\n");
+    printf("Pressione Qualquer tecla para continuar: ");
+    getchar();
+    getchar();
 }
