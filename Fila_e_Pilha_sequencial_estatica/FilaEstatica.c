@@ -163,5 +163,7 @@ int sequencia_valida(const char *s) {
         }
     }
 
+    if (controle != 0) return 0;
+
     return 1;
 }
