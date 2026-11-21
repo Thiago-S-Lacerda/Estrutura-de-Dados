@@ -1,26 +1,3 @@
-/* ============================================================
-   ListaDinEncadCirc.h
-   Estrutura de Dados I - UFPB - Aula 07
-   Lista dinamica encadeada circular
-
-   Referencia: BACKES, A. R. Algoritmos e Estruturas de Dados em
-   Linguagem C. Rio de Janeiro: LTC, 2023. Capitulo 5.
-
-   Este arquivo declara tudo o que e visivel para quem usa a
-   biblioteca. A definicao de struct elemento fica oculta em
-   ListaDinEncadCirc.c: Lista e um tipo opaco.
-
-   A DIFERENCA PARA A LISTA DINAMICA ENCADEADA DA AULA 06 NAO
-   ESTA AQUI. Os tipos sao identicos: um elemento continua tendo
-   um campo de dado e um campo prox. O que muda e a implementacao
-   das funcoes, porque o campo prox do ultimo elemento guarda o
-   endereco do primeiro, e nao a constante NULL.
-
-   Consequencia pratica para quem for estender esta biblioteca:
-   nenhum percurso pode terminar comparando prox com NULL. Todo
-   percurso para ao voltar ao inicio da lista, (*li).
-   ============================================================ */
-
 #ifndef LISTA_DIN_ENCAD_CIRC_OTM_H
 #define LISTA_DIN_ENCAD_CIRC_OTM_H
 

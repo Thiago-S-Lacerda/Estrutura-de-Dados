@@ -47,6 +47,11 @@ int PilhaDupla_cheia(PilhaDupla* pd) {
     return (pd->qtd1 + pd->qtd2 == pd->capacidade);
 }
 
+int PilhaDupla_vazia(PilhaDupla *pd) {
+    if (pd == NULL) return 0;
+    return (pd->qtd1 == 0 && pd->qtd2 == 0);
+}
+
 int insere_PilhaDupla(PilhaDupla* pd, int p, struct aluno al) {
     if (pd == NULL) return 0;
     if (PilhaDupla_cheia(pd)) return 0;
@@ -55,7 +60,7 @@ int insere_PilhaDupla(PilhaDupla* pd, int p, struct aluno al) {
         pd->qtd1++;
         return 1;
     } else if (p == 2) {
-        pd->dados[pd->capacidade - (pd->qtd2 + 1)];
+        pd->dados[pd->capacidade - (pd->qtd2 + 1)] = al;
         pd->qtd2++;
         return 1;
     } else {

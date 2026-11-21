@@ -29,21 +29,21 @@ typedef struct pilha Pilha;
 /* Aloca a estrutura da pilha e um vetor com 'capacidade' posicoes.
    Devolve o ponteiro da pilha, ou NULL se capacidade <= 0 ou se
    qualquer uma das duas alocacoes falhar. */
-Pilha* cria_Pilha(int capacidade);
+Pilha* cria_Pilha_char(int capacidade);
 
 /* Libera o vetor de dados e, em seguida, a estrutura da pilha. */
-void libera_Pilha(Pilha* pi);
+void libera_Pilha_char(Pilha* pi);
 
 /* --- informacoes de estado --------------------------------- */
 
 /* Devolve a quantidade de elementos, ou -1 se pi for NULL. */
-int tamanho_Pilha(Pilha* pi);
+int tamanho_Pilha_char(Pilha* pi);
 
 /* Devolve 1 se a pilha esta cheia, 0 caso contrario, -1 se pi for NULL. */
-int Pilha_cheia(Pilha* pi);
+int Pilha_cheia_char(Pilha* pi);
 
 /* Devolve 1 se a pilha esta vazia, 0 caso contrario, -1 se pi for NULL. */
-int Pilha_vazia(Pilha* pi);
+int Pilha_vazia_char(Pilha* pi);
 
 /* --- operacoes da pilha -------------------------------------
    Todas acontecem no topo, isto e, na posicao qtd - 1 do vetor.
@@ -51,16 +51,15 @@ int Pilha_vazia(Pilha* pi);
 
 /* Insere no topo da pilha (empilha). Falha se a pilha for invalida
    ou estiver cheia. Custo O(1). */
-int insere_Pilha(Pilha* pi, char c);
+int insere_Pilha_char(Pilha* pi, char c);
 
 /* Remove o elemento do topo da pilha (desempilha). Falha se a pilha
    for invalida ou estiver vazia. Custo O(1). */
-int remove_Pilha(Pilha* pi);
+int remove_Pilha_char(Pilha* pi);
 
 /* Copia para *al o elemento do topo, sem remove-lo. Falha se a
    pilha for invalida ou estiver vazia. Custo O(1). */
-int consulta_topo_Pilha(Pilha* pi, char *c);
+int consulta_topo_Pilha_char(Pilha* pi, char *c);
 
-int verifica_delimitadores(const char *expr);
 
 #endif /* PILHA_SEQUENCIAL_H */
