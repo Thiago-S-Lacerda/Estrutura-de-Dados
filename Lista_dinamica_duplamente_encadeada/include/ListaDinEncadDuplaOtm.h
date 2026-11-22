@@ -1,27 +1,3 @@
-/* ============================================================
-   ListaDinEncadDupla.h
-   Estrutura de Dados I - UFPB - Aula 08
-   Lista dinamica duplamente encadeada
-
-   Referencia: BACKES, A. R. Algoritmos e Estruturas de Dados em
-   Linguagem C. Rio de Janeiro: LTC, 2023. Capitulo 5, secao 5.7.
-
-   Este arquivo declara tudo o que e visivel para quem usa a
-   biblioteca. A definicao de struct elemento fica oculta em
-   ListaDinEncadDupla.c: Lista e um tipo opaco.
-
-   A DIFERENCA PARA A LISTA DINAMICA ENCADEADA SIMPLES NAO ESTA
-   AQUI. A interface e identica: os mesmos tipos visiveis e os
-   mesmos prototipos. O que muda esta escondido no .c: cada
-   elemento ganha um terceiro campo, ant, com o endereco do
-   elemento anterior. O primeiro elemento aponta ant para NULL
-   e o ultimo aponta prox para NULL.
-
-   Consequencia pratica para quem for estender esta biblioteca:
-   toda insercao e toda remocao precisam manter os DOIS sentidos
-   consistentes, e a religacao vem sempre antes do free.
-   ============================================================ */
-
 #ifndef LISTA_DIN_ENCAD_DUPLA_OTM_H
 #define LISTA_DIN_ENCAD_DUPLA_OTM_H
 

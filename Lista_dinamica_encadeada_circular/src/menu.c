@@ -40,8 +40,8 @@ void menu() {
     while (sistema) {
         printf("\n================================\n");
         printf("\t      MENU\n");
-        printf("<1> : Adicionar produto na lista\n");
-        printf("<2> : Remover produto na lista\n");
+        printf("<1> : Adicionar aluno na lista\n");
+        printf("<2> : Remover aluno na lista\n");
         printf("<3> : Buscar item na lista\n");
         printf("<4> : Funcoes Gerais\n");
         printf("<5> : Encerrar Programa\n");

@@ -1,18 +1,3 @@
-/* ============================================================
-   ListaDinEncadCirc.c
-   Estrutura de Dados I - UFPB - Aula 07
-   Lista dinamica encadeada circular
-
-   Implementacao identica a apresentada nos slides da Aula 07.
-   A definicao de struct elemento esta aqui, e nao no .h: e isso
-   que torna Lista um tipo opaco. Quem usa a biblioteca enxerga
-   apenas Lista* e os prototipos declarados no cabecalho.
-
-   Qualquer funcao nova que precise percorrer a lista no a no
-   tem de ser escrita NESTE arquivo, porque e aqui que os campos
-   dados e prox sao visiveis.
-   ============================================================ */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

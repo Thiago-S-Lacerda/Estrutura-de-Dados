@@ -38,8 +38,8 @@ void menu() {
     while (sistema) {
         printf("\n================================\n");
         printf("\t      MENU\n");
-        printf("<1> : Adicionar produto na lista\n");
-        printf("<2> : Remover produto na lista\n");
+        printf("<1> : Adicionar tarefa na lista\n");
+        printf("<2> : Remover tarefa na lista\n");
         printf("<3> : Buscar item na lista\n");
         printf("<4> : Funcoes Gerais\n");
         printf("<5> : Encerrar Programa\n");
@@ -84,7 +84,7 @@ void caso1(ListaTarefas *li, struct tarefa t) {
     printf("<1> : Inserir no final\n");
     printf("<2> : Inserir no inicio\n");
     printf("<3> : Inserir ordenado\n");
-    printf("<4> : Inserir pela prioridade (insere ao final dos produtos com a mesma prioridade)\n");
+    printf("<4> : Inserir pela prioridade (insere ao final das tarefas com a mesma prioridade)\n");
     printf("<5> : Voltar\n");
     printf("\n================================\n");
     printf("Digite o que voce quer fazer: ");
@@ -92,13 +92,13 @@ void caso1(ListaTarefas *li, struct tarefa t) {
     printf("\033[2J\033[H");
     switch (resp) {
         case 1:
-            printf("Digite o codigo do produto: ");
+            printf("Digite o codigo da tarefa: ");
             scanf("%d", &codigo);
             getchar();
-            printf("Digite a descricao do produto: ");
+            printf("Digite a descricao da tarefa: ");
             fgets(descricao, sizeof(descricao), stdin);
             descricao[strcspn(descricao, "\r\n")] = '\0';
-            printf("Digite a prioridade do produto: ");
+            printf("Digite a prioridade da tarefa: ");
             scanf("%d", &prioridade);
             t.codigo = codigo;
             strcpy(t.descricao, descricao);
@@ -108,13 +108,13 @@ void caso1(ListaTarefas *li, struct tarefa t) {
             }
             break;
         case 2:
-            printf("Digite o codigo do produto: ");
+            printf("Digite o codigo da tarefa: ");
             scanf("%d", &codigo);
             getchar();
-            printf("Digite a descricao do produto: ");
+            printf("Digite a descricao da tarefa: ");
             fgets(descricao, sizeof(descricao), stdin);
             descricao[strcspn(descricao, "\r\n")] = '\0';
-            printf("Digite a prioridade do produto: ");
+            printf("Digite a prioridade da tarefa: ");
             scanf("%d", &prioridade);
             t.codigo = codigo;
             strcpy(t.descricao, descricao);
@@ -124,13 +124,13 @@ void caso1(ListaTarefas *li, struct tarefa t) {
             }
             break;
         case 3:
-            printf("Digite o codigo do produto: ");
+            printf("Digite o codigo da tarefa: ");
             scanf("%d", &codigo);
             getchar();
-            printf("Digite a descricao do produto: ");
+            printf("Digite a descricao da tarefa: ");
             fgets(descricao, sizeof(descricao), stdin);
             descricao[strcspn(descricao, "\r\n")] = '\0';
-            printf("Digite a prioridade do produto: ");
+            printf("Digite a prioridade da tarefa: ");
             scanf("%d", &prioridade);
             t.codigo = codigo;
             strcpy(t.descricao, descricao);
@@ -140,13 +140,13 @@ void caso1(ListaTarefas *li, struct tarefa t) {
             }
             break;
         case 4:
-            printf("Digite o codigo do produto: ");
+            printf("Digite o codigo da tarefa: ");
             scanf("%d", &codigo);
             getchar();
-            printf("Digite a descricao do produto: ");
+            printf("Digite a descricao da tarefa: ");
             fgets(descricao, sizeof(descricao), stdin);
             descricao[strcspn(descricao, "\r\n")] = '\0';
-            printf("Digite a prioridade do produto: ");
+            printf("Digite a prioridade da tarefa: ");
             scanf("%d", &prioridade);
             t.codigo = codigo;
             strcpy(t.descricao, descricao);
@@ -192,7 +192,7 @@ void caso2(ListaTarefas *li) {
             break;
         case 3:
             int cod;
-            printf("Digite o codigo do produto a ser removido: ");
+            printf("Digite o codigo da tarefa a ser removido: ");
             scanf("%d", &cod);
             if (!remove_tarefa(li, cod)) {
                 printf("Nao foi possivel remover da lista\n");
@@ -242,7 +242,7 @@ void caso3(ListaTarefas *li, struct tarefa *t) {
             if (busca_tarefa_pos(li, pos, t)) {
                 printar_tarefa(t);
             } else {
-                printf("Posicao invalida");
+                printf("Posicao invalida\n");
             }
             break;
         case 2:
@@ -252,7 +252,7 @@ void caso3(ListaTarefas *li, struct tarefa *t) {
             if (busca_tarefa_cod(li, cod, t)) {
                 printar_tarefa(t);
             } else {
-                printf("Produto nao encontrado");
+                printf("Tarefa nao encontrada\n");
             }
             break;
         case 3:
@@ -264,7 +264,7 @@ void caso3(ListaTarefas *li, struct tarefa *t) {
             if (busca_tarefa_desc(li, descricao, t)) {
                 printar_tarefa(t);
             } else {
-                printf("Produto nao encontrado");
+                printf("Tarefa nao encontrada\n");
             }
             
             break;
