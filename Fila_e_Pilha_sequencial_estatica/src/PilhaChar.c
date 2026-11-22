@@ -1,13 +1,3 @@
-/* ============================================================
-   PilhaSequencial.c
-   Estrutura de Dados I - UFPB - Aula 11
-   Implementacao da pilha sequencial estatica com capacidade
-   definida na criacao.
-
-   Tudo o que deve ficar oculto do usuario da biblioteca esta
-   aqui: a definicao de struct pilha e o corpo das funcoes.
-   ============================================================ */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

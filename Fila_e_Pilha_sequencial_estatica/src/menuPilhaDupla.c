@@ -35,14 +35,17 @@ void menu_pilha_dupla() {
         scanf("%d", &resp);
         switch (resp) {
             case 1:
+                printf("\033[2J\033[H");
                 printf("Digite em qual pilha voce vai inserir (1 ou 2): ");
                 scanf("%d", &p);
                 criar_aluno(&a);
+                printf("\033[2J\033[H");
                 if (!insere_PilhaDupla(pd, p, a)) {
                     printf("Nao foi possivel inserir o aluno na pilha.\n");
                 }
                 break;
             case 2:
+                printf("\033[2J\033[H");
                 printf("Digite em qual pilha voce quer remover (1 ou 2): ");
                 scanf("%d", &p);
                 if (!remove_PilhaDupla(pd, p)) {
@@ -50,6 +53,7 @@ void menu_pilha_dupla() {
                 }   
                 break;
             case 3:
+                printf("\033[2J\033[H");
                 printf("Digite em qual pilha voce quer consultar (1 ou 2): ");
                 scanf("%d", &p);
                 if (!consulta_topo_PilhaDupla(pd, p, &a)) {
@@ -90,6 +94,7 @@ void caso4(PilhaDupla *pd) {
     printf("\033[2J\033[H");
     switch (resp) {
         case 1:
+            printf("\033[2J\033[H");
             printf("Digite em qual pilha voce quer saber o tamanho (1 ou 2): ");
             scanf("%d", &p);
             int tam = tamanho_PilhaDupla(pd, p);
@@ -100,6 +105,7 @@ void caso4(PilhaDupla *pd) {
             }
             break;
         case 2:
+            printf("\033[2J\033[H");
             if (PilhaDupla_cheia(pd)) {
                 printf("A pilha esta cheia\n");
             } else {
@@ -107,6 +113,7 @@ void caso4(PilhaDupla *pd) {
             }
             break;
         case 3:
+            printf("\033[2J\033[H");
             if (PilhaDupla_vazia(pd)) {
                 printf("A pilha esta vazia\n");
             } else {
@@ -155,4 +162,5 @@ void imprime_aluno_buscado(struct aluno *al) {
     printf("Pressione Qualquer tecla para continuar: ");
     getchar();
     getchar();
+    printf("\033[2J\033[H");
 }

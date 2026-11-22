@@ -1,23 +1,3 @@
-/* ============================================================
-   PilhaSequencial.h
-   Estrutura de Dados I - UFPB - Aula 11
-   Pilha sequencial estatica com capacidade definida na criacao
-
-   Referencia: BACKES, A. R. Algoritmos e Estruturas de Dados em
-   Linguagem C. Rio de Janeiro: LTC, 2023. Capitulo 8, secao 8.4.
-
-   Diferenca em relacao ao livro: no livro o vetor de dados tem
-   tamanho fixo MAX, definido em tempo de compilacao. Aqui o
-   tamanho (capacidade) e informado pelo usuario em cria_Pilha,
-   e o vetor e alocado com malloc nesse momento. Depois de
-   criada, a pilha continua com capacidade fixa: o vetor nao
-   cresce nem diminui.
-
-   Este arquivo declara tudo o que e visivel para quem usa a
-   biblioteca. Os campos de struct pilha ficam ocultos em
-   PilhaSequencial.c: Pilha e um tipo opaco.
-   ============================================================ */
-
 #ifndef PILHA_CHAR_H
 #define PILHA_CHAR_H
 

@@ -36,16 +36,19 @@ void menu_pilha() {
         switch (resp) {
             case 1:
                 criar_aluno(&a);
+                printf("\033[2J\033[H");
                 if (!insere_Pilha(pi, a)) {
                     printf("Nao foi possivel inserir o aluno na pilha.\n");
                 }
                 break;
             case 2:
+                printf("\033[2J\033[H");
                 if (!remove_Pilha(pi)) {
                     printf("Nao foi possivel remover da pilha\n");
                 }   
                 break;
             case 3:
+                printf("\033[2J\033[H");
                 if (!consulta_topo_Pilha(pi, &a)) {
                     printf("Não foi possivel consultar o aluno\n");
                     break;
@@ -85,6 +88,7 @@ void caso4(Pilha *pi) {
     printf("\033[2J\033[H");
     switch (resp) {
         case 1:
+            printf("\033[2J\033[H");
             int tam = tamanho_Pilha(pi);
             if (tam != -1) {
                 printf("Tamanho da pilha: %d\n", tam);
@@ -93,6 +97,7 @@ void caso4(Pilha *pi) {
             }
             break;
         case 2:
+            printf("\033[2J\033[H");
             if (Pilha_cheia(pi)) {
                 printf("A pilha esta cheia\n");
             } else {
@@ -100,6 +105,7 @@ void caso4(Pilha *pi) {
             }
             break;
         case 3:
+            printf("\033[2J\033[H");
             if (Pilha_vazia(pi)) {
                 printf("A pilha esta vazia\n");
             } else {
@@ -107,9 +113,11 @@ void caso4(Pilha *pi) {
             }
             break;
         case 4:
+            printf("\033[2J\033[H");
             char sequencia[100];
             printf("Digite uma sequencia de insercoes (I) e remocoes (R) sem espacos: ");
             scanf("%s", sequencia);
+            printf("\033[2J\033[H");
             if (sequencia_valida(sequencia)) {
                 printf("A sequencia e valida\n");
             } else {
@@ -117,9 +125,11 @@ void caso4(Pilha *pi) {
             }
             break;
         case 5:
+            printf("\033[2J\033[H");
             char expressao[100];
-            printf("Digite uma expressao para verificar se os delimitadores estao corretos: ");
+            printf("Digite uma expressao para verificar se os delimitadores estao corretos (sem espacos): ");
             scanf("%s", expressao);
+            printf("\033[2J\033[H");
             if (verifica_delimitadores(expressao)) {
                 printf("A expressao esta correta\n");
             } else {
@@ -240,4 +250,5 @@ void imprime_aluno_buscado(struct aluno *al) {
     printf("Pressione Qualquer tecla para continuar: ");
     getchar();
     getchar();
+    printf("\033[2J\033[H");
 }

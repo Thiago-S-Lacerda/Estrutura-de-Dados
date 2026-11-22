@@ -35,16 +35,19 @@ void menu_fila() {
         switch (resp) {
             case 1:
                 criar_aluno(&a);
+                printf("\033[2J\033[H");
                 if (!insere_Fila(fi, a)) {
                     printf("Nao foi possivel inserir o aluno na fila.\n");
                 }
                 break;
             case 2:
+                printf("\033[2J\033[H");
                 if (!remove_Fila(fi)) {
                     printf("Nao foi possivel remover da fila\n");
                 }   
                 break;
             case 3:
+                printf("\033[2J\033[H");
                 if (!consulta_Fila(fi, &a)) {
                     printf("Não foi possivel consultar o aluno\n");
                     break;
@@ -84,6 +87,7 @@ void caso4(Fila * fi) {
     printf("\033[2J\033[H");
     switch (resp) {
         case 1:
+            printf("\033[2J\033[H");
             int tam = tamanho_Fila(fi);
             if (tam != -1) {
                 printf("Tamanho da fila: %d\n", tam);
@@ -92,6 +96,7 @@ void caso4(Fila * fi) {
             }
             break;
         case 2:
+            printf("\033[2J\033[H");
             if (Fila_cheia(fi)) {
                 printf("A fila esta cheia\n");
             } else {
@@ -99,6 +104,7 @@ void caso4(Fila * fi) {
             }
             break;
         case 3:
+            printf("\033[2J\033[H");
             if (Fila_vazia(fi)) {
                 printf("A fila esta vazia\n");
             } else {
@@ -106,6 +112,7 @@ void caso4(Fila * fi) {
             }
             break;
         case 4:
+            printf("\033[2J\033[H");
             struct aluno al;
             criar_aluno(&al);
             if (!fura_Fila(fi, al)) {
@@ -113,10 +120,12 @@ void caso4(Fila * fi) {
             }
             break;
         case 5:
+            printf("\033[2J\033[H");
             int n = 0, k = 0;
             printf("Os alunos de 1 a 'n' serao retirados de k em k; Digite o numero n, k; Formatacao: <n, k>: ");
             scanf("%d, %d", &n, &k);
             int sobrv = josefo(n, k);
+            printf("\033[2J\033[H");
             if (sobrv == -1) {
                 printf("Nao foi possivel realizar a operacao\n");
             } else {
@@ -212,4 +221,5 @@ void imprime_aluno_buscado(struct aluno *al) {
     printf("Pressione Qualquer tecla para continuar: ");
     getchar();
     getchar();
+    printf("\033[2J\033[H");
 }
